@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEB Class 12 Computer Science - 2083 Prep</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 4px; }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 10px 40px -10px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+
+        .correct-ans { background: rgba(16, 185, 129, 0.2) !important; border-color: #10b981 !important; color: #34d399 !important; }
+        .wrong-ans { background: rgba(239, 68, 68, 0.2) !important; border-color: #ef4444 !important; color: #f87171 !important; }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- EXPANDED DATA: 10 SETS ---
+        const examSets = [
+            // ... Sets 1-5 (Keeping original content, enhanced titles)
+            {
+                id: 1,
+                title: "Set 1: The Essentials",
+                desc: "Mastering DBMS Normalization & Network Layers",
+                mcqs: [
+                    { q: "Which data type is used to store text in MS-Access?", options: ["Text", "Memo", "String", "Char"], correct: 1 },
+                    { q: "Which topology requires a central controller or hub?", options: ["Star", "Mesh", "Ring", "Bus"], correct: 0 },
+                    { q: "PHP is a ______ scripting language.", options: ["Server-side", "Client-side", "Browser-side", "None"], correct: 0 },
+                    { q: "Which keyword is used to define a structure in C?", options: ["struc", "stuct", "structure", "struct"], correct: 3 },
+                    { q: "In which normal form, all non-key attributes are fully dependent on the primary key?", options: ["1NF", "2NF", "3NF", "BCNF"], correct: 1 },
+                    { q: "Which is not a type of guided media?", options: ["Twisted Pair", "Coaxial", "Fiber Optic", "Microwave"], correct: 3 },
+                    { q: "Which function is used to open a file in C?", options: ["fopen()", "open()", "fileopen()", "fread()"], correct: 0 },
+                    { q: "IoT stands for?", options: ["Input of Things", "Internet of Technology", "Internet of Things", "Intranet of Things"], correct: 2 },
+                    { q: "Waterfall model is a type of?", options: ["SDLC", "Network Model", "Database Model", "AI Model"], correct: 0 }
+                ],
+                short: [
+                    "Explain Guided vs Unguided transmission media with examples.",
+                    "Differentiate between Primary Key and Foreign Key.",
+                    "Write a C program to input roll, name, and marks of a student using Structure.",
+                    "Write a JS function to validate if a form field is empty.",
+                    "Define AI and explain its modern applications."
+                ],
+                long: [
+                    "What is Normalization? Explain 1NF, 2NF, and 3NF with a suitable table example.",
+                    "Explain Client-Server and Peer-to-Peer architecture with diagrams."
+                ]
+            },
+            {
+                id: 2,
+                title: "Set 2: C Programming Core",
+                desc: "Deep dive into Structures & Pointers",
+                mcqs: [
+                    { q: "The layer of OSI model responsible for routing is?", options: ["Physical", "Data Link", "Network", "Transport"], correct: 2 },
+                    { q: "Main advantage of Normalized database is?", options: ["Redundancy Control", "Complexity", "Memory Loss", "None"], correct: 0 },
+                    { q: "Variable name in PHP starts with?", options: ["@", "#", "$", "&"], correct: 2 },
+                    { q: "Size of a pointer variable in 32-bit system is?", options: ["2 bytes", "4 bytes", "8 bytes", "1 byte"], correct: 1 },
+                    { q: "Which operator accesses structure members?", options: [".", "->", "&", "*"], correct: 0 },
+                    { q: "Agile model is based on?", options: ["Linear approach", "Iterative approach", "Sequential", "Rigid"], correct: 1 },
+                    { q: "IPv6 address is ____ bits long.", options: ["32", "64", "128", "256"], correct: 2 },
+                    { q: "Example of Cloud Computing service?", options: ["Google Drive", "Notepad", "Paint", "Calculator"], correct: 0 },
+                    { q: "Javascript is executed by?", options: ["Server", "Client Browser", "Database", "OS"], correct: 1 }
+                ],
+                short: [
+                    "Differentiate between Star Topology and Ring Topology.",
+                    "List advantages of Distributed Database over Centralized.",
+                    "Write a C program to find factorial using function.",
+                    "Explain features of OOP (Inheritance, Polymorphism).",
+                    "Short note on: a) E-Governance b) E-Commerce."
+                ],
+                long: [
+                    "Write a C program to create 'student.txt' and store name, class, roll of 5 students (File Handling).",
+                    "Explain Waterfall model with phases, pros, and cons."
+                ]
+            },
+            {
+                id: 3,
+                title: "Set 3: Web & Network Concepts",
+                desc: "OSI Model, PHP & JavaScript Logic",
+                mcqs: [
+                    { q: "SQL command to retrieve data?", options: ["GET", "SELECT", "FETCH", "OPEN"], correct: 1 },
+                    { q: "Hub operates in which OSI layer?", options: ["Physical", "Data Link", "Network", "Session"], correct: 0 },
+                    { q: "JS variables are declared using?", options: ["var", "let", "const", "All of above"], correct: 3 },
+                    { q: "Mode 'w' in file handling?", options: ["Reading", "Writing", "Appending", "Both R/W"], correct: 1 },
+                    { q: "Which is a DDL command?", options: ["INSERT", "UPDATE", "CREATE", "SELECT"], correct: 2 },
+                    { q: "Converting object to byte stream?", options: ["Serialization", "Encapsulation", "Polymorphism", "Inheritance"], correct: 0 },
+                    { q: "100BaseT uses which cable?", options: ["Coaxial", "Fiber", "Twisted Pair", "None"], correct: 2 },
+                    { q: "Mobile Computing example?", options: ["Desktop", "Mainframe", "Smartphone", "Server"], correct: 2 },
+                    { q: "Feasibility study phase?", options: ["Testing", "Coding", "Analysis", "Maintenance"], correct: 2 }
+                ],
+                short: [
+                    "Compare IPv4 and IPv6 addressing.",
+                    "Roles and responsibilities of a DBA.",
+                    "C program to find largest number in array of 10.",
+                    "Difference between Client-Side and Server-Side Scripting.",
+                    "Types of Cloud Computing (Public, Private, Hybrid)."
+                ],
+                long: [
+                    "Explain OSI Reference Model and functions of 7 layers.",
+                    "C program to read 'marks.dat' and display student marks."
+                ]
+            },
+            {
+                id: 4,
+                title: "Set 4: Past Year Trends",
+                desc: "Questions frequently asked in 2080-82",
+                mcqs: [
+                    { q: "Uniquely identify a record?", options: ["Foreign Key", "Primary Key", "Alternate Key", "Candidate Key"], correct: 1 },
+                    { q: "HTML form data sent via?", options: ["GET & POST", "SEND & RECEIVE", "PUSH & PULL", "None"], correct: 0 },
+                    { q: "Pointer stores?", options: ["Value", "Address", "Character", "Float"], correct: 1 },
+                    { q: "Prototype model suitable for?", options: ["Stable reqs", "Unclear reqs", "Small projects", "None"], correct: 1 },
+                    { q: "Start PHP script?", options: ["<php>", "<?php", "<script>", "<?>"], correct: 1 },
+                    { q: "Wireless transmission uses?", options: ["Cables", "Radio Waves", "Connectors", "None"], correct: 1 },
+                    { q: "SQL DELETE is?", options: ["DML", "DDL", "DCL", "TCL"], correct: 0 },
+                    { q: "Big Data requires?", options: ["Manual calc", "High processing", "Small RAM", "Pen/Paper"], correct: 1 },
+                    { q: "Structure members stored in?", options: ["Contiguous memory", "Random memory", "Stack", "Heap"], correct: 0 }
+                ],
+                short: [
+                    "Explain Peer-to-Peer network architecture.",
+                    "Define Data Integrity and Security.",
+                    "Swap two numbers using Pointers (Call by Reference).",
+                    "Syntax to connect PHP to MySQL database.",
+                    "Ethical issues in ICT (Cyber Law, Copyright)."
+                ],
+                long: [
+                    "Why is Agile preferred over Waterfall model?",
+                    "C program: Store N numbers in array, find sum/avg using pointers."
+                ]
+            },
+            {
+                id: 5,
+                title: "Set 5: Advanced Logic",
+                desc: "Targeting A+ with tough questions",
+                mcqs: [
+                    { q: "Join returning all from left table?", options: ["Inner", "Left Join", "Right", "Outer"], correct: 1 },
+                    { q: "Device connecting different networks?", options: ["Hub", "Switch", "Router", "Repeater"], correct: 2 },
+                    { q: "Information about data?", options: ["Database", "Metadata", "Relation", "Object"], correct: 1 },
+                    { q: "Union in C shares?", options: ["Different mem", "Same memory", "No memory", "Heap"], correct: 1 },
+                    { q: "Spiral Model combines?", options: ["Waterfall & Prototype", "Agile & Waterfall", "V-Model & Agile", "None"], correct: 0 },
+                    { q: "Valid IPv4 address?", options: ["192.168.1.1", "300.168.1.1", "192.168.1", "123.456.78"], correct: 0 },
+                    { q: "getElementById() used in?", options: ["PHP", "C", "JavaScript", "SQL"], correct: 2 },
+                    { q: "Virtual Reality is?", options: ["Physical", "Simulated Env", "Database", "Network"], correct: 1 },
+                    { q: "Recursive function?", options: ["Calls itself", "Calls main", "Calls nothing", "Loops forever"], correct: 0 }
+                ],
+                short: [
+                    "Concept of Modulation and Demodulation (Modem).",
+                    "Symbols used in ER-Diagrams.",
+                    "Diff between Structure and Union.",
+                    "PHP script to display 'Hello World' in H1 tag.",
+                    "IoT opportunities and challenges in Nepal."
+                ],
+                long: [
+                    "C program: Read N employees (ID, Name, Salary), display if salary > 50000.",
+                    "Explain Bus, Ring, and Mesh topology with pros/cons."
+                ]
+            },
+            // --- NEW SETS 6-10 ---
+            {
+                id: 6,
+                title: "Set 6: Web Tech Masterclass",
+                desc: "Focus on PHP, JS, and HTML integration",
+                mcqs: [
+                    { q: "Which tag is used for internal CSS?", options: ["<css>", "<script>", "<style>", "<link>"], correct: 2 },
+                    { q: "Symbol for 'Address of' operator in C?", options: ["*", "&", "#", "@"], correct: 1 },
+                    { q: "Correct date format in SQL?", options: ["YYYY-MM-DD", "DD-MM-YYYY", "MM-DD-YYYY", "DD/MM/YYYY"], correct: 0 },
+                    { q: "Is JavaScript case sensitive?", options: ["Yes", "No", "Depends on browser", "Sometimes"], correct: 0 },
+                    { q: "Which is a Network Layer device?", options: ["Hub", "Switch", "Router", "Modem"], correct: 2 },
+                    { q: "Full form of SQL?", options: ["Structured Query Language", "Simple Query Language", "Standard Query Logic", "System Query Link"], correct: 0 },
+                    { q: "In OOP, wrapping data and function is?", options: ["Inheritance", "Encapsulation", "Polymorphism", "Abstraction"], correct: 1 },
+                    { q: "Main component of Expert System?", options: ["Database", "Knowledge Base", "Router", "Sensor"], correct: 1 },
+                    { q: "Output of printf('%d', 5/2); in C?", options: ["2.5", "2", "3", "Error"], correct: 1 } // Integer division
+                ],
+                short: [
+                    "Write a JavaScript function to check if a number is prime or not.",
+                    "Explain the structure of a PHP script with an example of variable declaration.",
+                    "What is a relational database? Explain terms: Tuple, Attribute, Domain.",
+                    "Differentiate between STP and UTP cables.",
+                    "What is Big Data? Explain the 3 Vs (Volume, Velocity, Variety)."
+                ],
+                long: [
+                    "Write a C program to read two matrices, add them, and display the result.",
+                    "Explain the Client-Server Network Model. How is it different from Peer-to-Peer?"
+                ]
+            },
+            {
+                id: 7,
+                title: "Set 7: The 'C' Challenger",
+                desc: "Hardcore C Programming Logic",
+                mcqs: [
+                    { q: "Which mode appends data to file?", options: ["r", "w", "a", "w+"], correct: 2 },
+                    { q: "Size of float in C?", options: ["2 bytes", "4 bytes", "8 bytes", "10 bytes"], correct: 1 },
+                    { q: "Simplex mode of communication?", options: ["Telephone", "Walkie-Talkie", "Radio/TV", "Internet"], correct: 2 },
+                    { q: "Software that translates source code to object code?", options: ["Compiler", "Interpreter", "Assembler", "All"], correct: 0 },
+                    { q: "Which is NOT a valid variable name?", options: ["_user", "user1", "1user", "user_name"], correct: 2 },
+                    { q: "Protocol for sending email?", options: ["POP3", "SMTP", "FTP", "HTTP"], correct: 1 },
+                    { q: "AI system that mimics human brain?", options: ["Expert System", "Neural Network", "Fuzzy Logic", "Robotics"], correct: 1 },
+                    { q: "Command to create a table?", options: ["MAKE TABLE", "CREATE TABLE", "NEW TABLE", "ADD TABLE"], correct: 1 },
+                    { q: "Tag used for JS in HTML?", options: ["<js>", "<javascript>", "<script>", "<code>"], correct: 2 }
+                ],
+                short: [
+                    "Write a C program to reverse a given string without using library function.",
+                    "Explain the function of a Switch and a Router in a network.",
+                    "What is Normalization? Why do we need it?",
+                    "Write a PHP script to find the sum of digits of a number.",
+                    "Explain the concept of 'Cloud Storage' with examples."
+                ],
+                long: [
+                    "Write a C program to read N numbers, sort them in ascending order using array, and display.",
+                    "What is SDLC? Compare Prototyping Model vs Spiral Model."
+                ]
+            },
+            {
+                id: 8,
+                title: "Set 8: Future Tech & Society",
+                desc: "Recent Trends, AI & Ethics",
+                mcqs: [
+                    { q: "Buying and selling over internet?", options: ["E-Learning", "E-Commerce", "E-Governance", "Social Media"], correct: 1 },
+                    { q: "Malicious software is called?", options: ["Malware", "Freeware", "Shareware", "Firmware"], correct: 0 },
+                    { q: "Digital signature ensures?", options: ["Authenticity", "Speed", "Cost", "Size"], correct: 0 },
+                    { q: "IPv4 is ____ bits.", options: ["32", "64", "128", "16"], correct: 0 },
+                    { q: "C language was developed by?", options: ["Bill Gates", "Dennis Ritchie", "Bjarne Stroustrup", "Steve Jobs"], correct: 1 },
+                    { q: "Which key cannot have NULL value?", options: ["Foreign Key", "Primary Key", "Alternate Key", "Secondary Key"], correct: 1 },
+                    { q: "Fiber optic cable uses?", options: ["Electricity", "Light", "Radio", "Sound"], correct: 1 },
+                    { q: "Alert box in JS?", options: ["msg()", "alert()", "popup()", "warn()"], correct: 1 },
+                    { q: "Structure is a collection of?", options: ["Same data types", "Different data types", "Only integers", "Only strings"], correct: 1 }
+                ],
+                short: [
+                    "What is Cyber Law? Why is it important in Nepal?",
+                    "Define AI. Explain the Turing Test briefly.",
+                    "Write a C program to check if a number is Palindrome.",
+                    "Explain the importance of Data Backup and Recovery.",
+                    "Differentiate between Optical Fiber and Coaxial Cable."
+                ],
+                long: [
+                    "Explain the concept of OOP. How does it solve the problems of POP (Procedural Oriented Programming)?",
+                    "Write a C program using structure to read information of 10 books (Title, Author, Price) and display books with price > 500."
+                ]
+            },
+            {
+                id: 9,
+                title: "Set 9: Networking Deep Dive",
+                desc: "IP Addressing, Topology & Security",
+                mcqs: [
+                    { q: "Class C IP address range starts with?", options: ["127", "192", "10", "172"], correct: 1 },
+                    { q: "Which layer provides end-to-end delivery?", options: ["Network", "Transport", "Session", "Application"], correct: 1 },
+                    { q: "Unwanted emails are called?", options: ["Spam", "Trash", "Draft", "Inbox"], correct: 0 },
+                    { q: "Logical operator for AND in C?", options: ["&", "&&", "||", "!"], correct: 1 },
+                    { q: "Which is not an SDLC phase?", options: ["Coding", "Testing", "Marketing", "Maintenance"], correct: 2 },
+                    { q: "VPN stands for?", options: ["Virtual Private Network", "Visual Public Network", "Virtual Public Net", "Verified Private Net"], correct: 0 },
+                    { q: "Extension of PHP file?", options: [".html", ".xml", ".php", ".ph"], correct: 2 },
+                    { q: "Loop that executes at least once?", options: ["For", "While", "Do-While", "None"], correct: 2 },
+                    { q: "SQL command to change data?", options: ["CHANGE", "MODIFY", "UPDATE", "ALTER"], correct: 2 }
+                ],
+                short: [
+                    "Explain the TCP/IP model and its layers.",
+                    "What is Cryptography? Differentiate between Symmetric and Asymmetric encryption.",
+                    "Write a C program to print the Fibonacci series up to N terms.",
+                    "What is a Form in HTML? How is it handled in PHP?",
+                    "Write a short note on Social Media and its impact on students."
+                ],
+                long: [
+                    "Define Topology. Explain Star, Ring, and Bus topology with clear diagrams.",
+                    "Write a C program to create a file 'odd.txt' and write all odd numbers from 1 to 100 into it."
+                ]
+            },
+            {
+                id: 10,
+                title: "Set 10: The Ultimate Test",
+                desc: "Mixed Bag of Most Likely Questions",
+                mcqs: [
+                    { q: "Which one is a guided media?", options: ["Microwave", "Satellite", "Coaxial Cable", "Infrared"], correct: 2 },
+                    { q: "Complexity of Binary Search?", options: ["O(n)", "O(n^2)", "O(log n)", "O(1)"], correct: 2 },
+                    { q: "Keyword to prevent variable modification in C?", options: ["static", "const", "volatile", "auto"], correct: 1 },
+                    { q: "Which of these is an OOP language?", options: ["C", "C++", "Assembly", "HTML"], correct: 1 },
+                    { q: "Number of layers in OSI?", options: ["4", "5", "7", "6"], correct: 2 },
+                    { q: "Which constraint ensures unique value?", options: ["UNIQUE", "DEFAULT", "CHECK", "NULL"], correct: 0 },
+                    { q: "Server-side script runs on?", options: ["Client", "Web Server", "Database", "Network"], correct: 1 },
+                    { q: "IoT devices communicate via?", options: ["Magic", "Internet", "Telepathy", "None"], correct: 1 },
+                    { q: "Pointer to a pointer?", options: ["*p", "**p", "&p", "&&p"], correct: 1 }
+                ],
+                short: [
+                    "What is a Distributed System? Mention its advantages.",
+                    "Explain the concept of Recursion with a C example (e.g., Factorial).",
+                    "Differentiate between GET and POST methods in PHP.",
+                    "What is a Firewall? Why is it necessary?",
+                    "Discuss the application of AI in Healthcare and Education."
+                ],
+                long: [
+                    "Write a complete C program to input data of 10 students (Name, Class, Marks) and write them to a file named 'result.txt'.",
+                    "What is Normalization? Explain the anomalies (Insertion, Deletion, Update) if a database is not normalized."
+                ]
+            }
+        ];
+
+        const FooterBio = () => (
+            <footer className="mt-20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-indigo-900 opacity-90"></div>
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+                
+                <div className="max-w-4xl mx-auto px-6 py-16 relative z-10 text-center">
+                    <div className="inline-block p-1 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 mb-6 shadow-2xl hover:scale-105 transition-transform duration-300">
+                        <div className="bg-slate-900 p-2 rounded-full">
+                            <div className="w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center overflow-hidden">
+                                <i className="fas fa-user-astronaut text-4xl text-indigo-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h2 className="text-4xl font-extrabold text-white mb-2 tracking-tight">
+                        Md Mubarak Alam
+                    </h2>
+                    <p className="text-indigo-200 text-lg mb-6 font-medium">Visionary Developer & Creator</p>
+                    
+                    <p className="max-w-2xl mx-auto text-slate-300 leading-relaxed mb-8 text-lg">
+                        "Empowering students through technology. This platform is crafted with precision to help you master Computer Science and ace your NEB exams. Believe in your code, believe in yourself."
+                    </p>
+                    
+                    <div className="flex justify-center gap-6">
+                        {['facebook', 'twitter', 'linkedin', 'github'].map((social) => (
+                            <button key={social} className="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-white hover:bg-white hover:text-indigo-900 transition-all duration-300 hover:-translate-y-2 shadow-lg">
+                                <i className={`fab fa-${social} text-xl`}></i>
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="mt-12 pt-8 border-t border-indigo-500/30 text-indigo-300 text-sm">
+                        &copy; 2083 Md Mubarak Alam. All Rights Reserved. <br/>
+                        <span className="opacity-60 text-xs">Designed with ❤️ in Nepal</span>
+                    </div>
+                </div>
+            </footer>
+        );
+
+        const AnalysisPanel = () => (
+            <div className="mb-10 p-1 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-2xl animate-fade-in">
+                <div className="bg-slate-900 p-6 rounded-xl h-full relative overflow-hidden">
+                    <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-purple-500 rounded-full blur-3xl opacity-20"></div>
+                    
+                    <div className="flex items-center gap-4 mb-6 relative z-10">
+                        <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                            <i className="fas fa-chart-pie text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-white">Exam Strategy 2083</h2>
+                            <p className="text-slate-400 text-sm">Based on recent NEB trends</p>
+                        </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                        <div className="glass-panel p-5 rounded-xl border border-indigo-500/20">
+                            <h3 className="font-bold text-lg mb-3 text-indigo-400 flex items-center gap-2">
+                                <i className="fas fa-fire"></i> Hot Topics
+                            </h3>
+                            <ul className="text-sm space-y-3 text-slate-300">
+                                <li className="flex justify-between items-center bg-slate-800/50 p-2 rounded">
+                                    <span>C File Handling</span>
+                                    <span className="text-xs font-bold bg-indigo-600 text-white px-2 py-0.5 rounded">8 Marks</span>
+                                </li>
+                                <li className="flex justify-between items-center bg-slate-800/50 p-2 rounded">
+                                    <span>Normalization</span>
+                                    <span className="text-xs font-bold bg-purple-600 text-white px-2 py-0.5 rounded">100% Fix</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div className="glass-panel p-5 rounded-xl border border-emerald-500/20">
+                            <h3 className="font-bold text-lg mb-3 text-emerald-400 flex items-center gap-2">
+                                <i className="fas fa-check-circle"></i> Pass Formula
+                            </h3>
+                            <p className="text-sm text-slate-300 leading-relaxed">
+                                Don't panic! Just secure <span className="text-emerald-400 font-bold">11 MCQs</span> + 
+                                <span className="text-emerald-400 font-bold"> OSI Model</span> + 
+                                <span className="text-emerald-400 font-bold"> C Structure</span>. 
+                                That's easily <span className="text-white font-bold text-lg">35+</span> marks.
+                            </p>
+                        </div>
+                        
+                        <div className="glass-panel p-5 rounded-xl border border-pink-500/20">
+                            <h3 className="font-bold text-lg mb-3 text-pink-400 flex items-center gap-2">
+                                <i className="fas fa-lightbulb"></i> Pro Tip
+                            </h3>
+                            <p className="text-sm text-slate-300">
+                                In C programming questions, even if logic is wrong, writing correct <span className="text-pink-300 font-mono">#include</span> and <span className="text-pink-300 font-mono">main()</span> structure gives you 2-3 marks!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const MCQ = ({ data, index }) => {
+            const [selected, setSelected] = useState(null);
+            
+            return (
+                <div className="glass-card p-5 rounded-xl">
+                    <p className="font-semibold text-slate-200 mb-4 text-lg">
+                        <span className="text-indigo-400 font-bold mr-2 text-xl">{index + 1}.</span> 
+                        {data.q}
+                    </p>
+                    <div className="grid grid-cols-1 gap-2">
+                        {data.options.map((opt, i) => {
+                            let btnClass = "p-3 text-left text-sm rounded-lg border transition-all duration-200 flex items-center ";
+                            if (selected === null) btnClass += "border-slate-700 bg-slate-800/50 hover:bg-slate-700 hover:border-indigo-500 text-slate-300";
+                            else if (i === data.correct) btnClass += "correct-ans font-bold shadow-lg scale-[1.02]";
+                            else if (selected === i && i !== data.correct) btnClass += "wrong-ans opacity-80";
+                            else btnClass += "border-slate-800 bg-slate-900/50 text-slate-600 blur-[1px]";
+
+                            return (
+                                <button 
+                                    key={i}
+                                    onClick={() => setSelected(i)}
+                                    disabled={selected !== null}
+                                    className={btnClass}
+                                >
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 border ${selected === i || i === data.correct ? 'border-current' : 'border-slate-600'}`}>
+                                        {i === data.correct && selected !== null ? <i className="fas fa-check text-xs"></i> : 
+                                         selected === i ? <i className="fas fa-times text-xs"></i> :
+                                         <span className="text-xs">{String.fromCharCode(65 + i)}</span>}
+                                    </div>
+                                    {opt}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [activeSetId, setActiveSetId] = useState(1);
+            const activeSet = examSets.find(s => s.id === activeSetId);
+
+            return (
+                <div className="min-h-screen flex flex-col font-sans">
+                    {/* Modern Navbar */}
+                    <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-700 sticky top-0 z-50">
+                        <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                                <div className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-2.5 rounded-xl shadow-lg shadow-indigo-500/30">
+                                    <i className="fas fa-code text-xl"></i>
+                                </div>
+                                <div>
+                                    <h1 className="text-xl font-bold text-white tracking-wide">NEB <span className="text-indigo-400">CS 2083</span></h1>
+                                    <p className="text-xs text-slate-400 font-medium tracking-wider uppercase">Exam Prep Portal</p>
+                                </div>
+                            </div>
+                            <div className="hidden md:flex items-center gap-4">
+                                <div className="text-xs font-semibold text-indigo-300 bg-indigo-900/50 px-3 py-1.5 rounded-full border border-indigo-500/30">
+                                    <i className="fas fa-clock mr-2"></i> 2 Hours
+                                </div>
+                                <div className="text-xs font-semibold text-emerald-300 bg-emerald-900/50 px-3 py-1.5 rounded-full border border-emerald-500/30">
+                                    <i className="fas fa-star mr-2"></i> 75 Marks
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-6xl mx-auto px-4 py-8 flex-grow">
+                        <AnalysisPanel />
+
+                        {/* Modern Tab Selector */}
+                        <div className="mb-8">
+                            <h3 className="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-4 ml-1">Select Model Set</h3>
+                            <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-2">
+                                {examSets.map(set => (
+                                    <button
+                                        key={set.id}
+                                        onClick={() => setActiveSetId(set.id)}
+                                        className={`py-3 px-1 rounded-lg text-xs font-bold transition-all duration-300 relative overflow-hidden group ${
+                                            activeSetId === set.id 
+                                            ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/40 translate-y-[-2px]" 
+                                            : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white border border-slate-700"
+                                        }`}
+                                    >
+                                        Set {set.id}
+                                        {activeSetId === set.id && (
+                                            <span className="absolute bottom-0 left-0 w-full h-1 bg-white/30"></span>
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Content Area */}
+                        <div className="animate-fade-in space-y-10">
+                            <div className="text-center py-6 relative">
+                                <h2 className="text-4xl md:text-5xl font-extrabold gradient-text mb-3">{activeSet.title}</h2>
+                                <p className="text-slate-400 text-lg">{activeSet.desc}</p>
+                                <div className="w-24 h-1 bg-indigo-500 mx-auto mt-6 rounded-full opacity-50"></div>
+                            </div>
+
+                            {/* Section A */}
+                            <section>
+                                <div className="flex items-center gap-3 mb-6">
+                                    <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">Group A</span>
+                                    <h3 className="text-xl font-bold text-white">Objective Analysis</h3>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {activeSet.mcqs.map((q, idx) => (
+                                        <MCQ key={idx} data={q} index={idx} />
+                                    ))}
+                                </div>
+                            </section>
+
+                            {/* Section B */}
+                            <section>
+                                <div className="flex items-center gap-3 mb-6 mt-12">
+                                    <span className="bg-orange-500/10 text-orange-400 border border-orange-500/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">Group B</span>
+                                    <h3 className="text-xl font-bold text-white">Short Answer Logic</h3>
+                                </div>
+                                <div className="grid grid-cols-1 gap-4">
+                                    {activeSet.short.map((q, idx) => (
+                                        <div key={idx} className="glass-panel p-5 rounded-xl border-l-4 border-orange-500 flex gap-4 hover:bg-slate-800/50 transition-colors">
+                                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-500 font-bold text-sm">
+                                                {idx + 10}
+                                            </div>
+                                            <p className="text-slate-200 font-medium leading-relaxed">{q}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            {/* Section C */}
+                            <section>
+                                <div className="flex items-center gap-3 mb-6 mt-12">
+                                    <span className="bg-purple-500/10 text-purple-400 border border-purple-500/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">Group C</span>
+                                    <h3 className="text-xl font-bold text-white">Long Answer Architecture</h3>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {activeSet.long.map((q, idx) => (
+                                        <div key={idx} className="glass-panel p-8 rounded-2xl border border-purple-500/30 relative overflow-hidden group">
+                                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                                <i className="fas fa-pen-nib text-6xl text-purple-500"></i>
+                                            </div>
+                                            <div className="relative z-10">
+                                                <span className="text-purple-400 font-bold text-lg mb-2 block">Question {idx + 15}</span>
+                                                <p className="text-xl text-white font-semibold leading-relaxed mb-4">{q}</p>
+                                                <div className="flex gap-2">
+                                                    <span className="text-xs bg-purple-900/50 text-purple-300 px-2 py-1 rounded border border-purple-500/20">8 Marks</span>
+                                                    <span className="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded border border-slate-700">Detailed Diagram Required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        </div>
+                    </main>
+
+                    <FooterBio />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
